@@ -1,0 +1,30 @@
+-> We had a couple of meeting and finally decided to use antlr4 to generate parse tree and for runtime we are using Java.
+
+Team members
+-------------
+Purushothama Shathappa
+
+Praneeth Kumar Reddy Kotha
+
+Rahul Ghanghas
+
+
+Name                             - 33% purushothama 33% Praneeth 33% Rahul
+
+Grammar                          - 33% purushothama 33% Praneeth 33% Rahul
+
+Operators and Keywords           - 33% purushothama 33% Praneeth 33% Rahul
+
+Lexical Analysis and Programs    -
+
+Built Lexer and Parser Files	   -
+
+Built Listener and Runner 	     -
+
+Built Runtime Interpreter        -
+
+Testing Interpreter              -
+
+Examples and Intermediate Code   -
+
+Documentation                    -
