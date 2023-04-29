@@ -23,7 +23,7 @@ def lexer(given_file):
     proce_ss = open(given_file+"_iptk", 'r').read()
     tokenize__str = tokenize(BytesIO(proce_ss.encode('utf-8')).readline)
     identify__list = []
-    for tok_num, tok_val, , _, _ in tokenize_str:
+    for tok_num, tok_val, _, _, _ in tokenize__str:
         if(len(tok_val) != 0):
             ascii = reduce(lambda x, y: str(x)+str(y), map(ord, tok_val))
             if ascii != 10 and tok_val != "utf-8" and ascii != "32323232" and ascii != 9:
