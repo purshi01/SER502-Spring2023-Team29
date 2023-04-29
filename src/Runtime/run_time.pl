@@ -1,3 +1,85 @@
+% Runtime Semantics
+
+% Update Environment
+update_s(t_id(K_s), V, Type_s, Env_s, FinalEnv_s) :- update_s(K_s, V, Type_s, Env_s, FinalEnv_s).
+update_s(K_s, V, Type_s, [], [(K_s, V, Type_s)]) :- K_s \= t_id(_).
+update_s(K_s, V, Type_s, [(K_s, _, _)|T], [(K_s, V, Type_s)|T]) :- K_s \= t_id(_).
+update_s(K_s, V, Type_s, [H|T], [H|R]) :- K_s \= t_id(_), H \= (K_s,_,_), update_s(K_s, V, Type_s, T, R).
+
+
+% Lookup Value in Environment
+lookup_s(t_id(K_s), Env_s, V, Type_s) :- lookup_s(K_s, Env_s, V, Type_s).
+lookup_s(K_s, [(K_s,V,Type_s)|_], V, Type_s) :- K_s \= t_id(_).
+lookup_s(K_s, [_|T], V, Type_s) :- K_s \= t_id(_), lookup_s(K_s, T, V, Type_s).
+
+
+% Check if an identifier is present in env.
+check_present_s(t_id(K_s),Env_s) :- check_present_s(K_s, Env_s).
+check_present_s(K_s,[(K_s,_,_)|_]).
+check_present_s(K_s,[(H,_,_)|T]) :- K_s \= H, check_present_s(K_s,T).
+
+%----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+% List operations
+addAtIndex_s(_ValToAdd_s, List, Index_s, _FinalList) :- length(List, Length), Index_s >= Length + 2, write("Length of the list is "), write(Length), write(". Please provide correct index."), nl, fail.
+addAtIndex_s(_ValToAdd_s, _List, Index_s, _FinalList) :- Index_s =< 0, write("Please provide index greater than 0."), nl, fail.
+addAtIndex_s(ValToAdd_s, List, Index_s, FinalList) :- length(List, Length), Index_s < Length + 2, Index_s > 0, addAtIndex_s(ValToAdd_s, List, 1, Index_s, FinalList).
+addAtIndex_s(ValToAdd_s, List, Iterator_s, Index_s, [ValToAdd_s|List]) :- Iterator_s =:= Index_s.
+addAtIndex_s(ValToAdd_s, [H|T], Iterator_s, Index_s, [H|FinalList]) :- Iterator_s < Index_s, NextIterator = Iterator_s + 1, addAtIndex_s(ValToAdd_s, T, NextIterator, Index_s, FinalList).
+
+deleteAtIndex_s(Index_s, List, _FinalList) :- length(List, Length), Index_s > Length, write("Length of the list is "), write(Length), write(". Please provide correct index."), nl, fail.
+deleteAtIndex_s(Index_s, _List, _FinalVal) :- Index_s =< 0, write("Please provide index greater than 0."), nl, fail.
+deleteAtIndex_s(Index_s, List, FinalList) :- length(List, Length), Index_s =< Length, Index_s > 0, deleteAtIndex_s(Index_s, 1, List, FinalList).
+deleteAtIndex_s(Index_s, Iterator_s, [_|T], T) :- Index_s =:= Iterator_s.
+deleteAtIndex_s(Index_s, Iterator_s, [H|T], [H|FinalList]) :- Iterator_s < Index_s, NextIterator = Iterator_s + 1, deleteAtIndex_s(Index_s, NextIterator, T, FinalList).
+
+getAtIndex_s(Index_s, List, _Val) :- length(List, Length), Index_s > Length, write("Length of the list is "), write(Length), write(". Please provide correct index."), nl, fail.
+getAtIndex_s(Index_s, _List, _Val) :- Index_s =< 0, write("Please provide index greater than 0."), nl, fail.
+getAtIndex_s(Index_s, List, Val_s) :- length(List, Length), Index_s =< Length, Index_s > 0, getAtIndex_s(Index_s, 1, List, Val_s).
+getAtIndex_s(Index_s, Iterator_s, [Val_s|_], Val_s) :- Index_s =:= Iterator_s.
+getAtIndex_s(Index_s, Iterator_s, [_|T], Val_s) :- Iterator_s < Index_s, NextIterator = Iterator_s + 1, getAtIndex_s(Index_s, NextIterator, T, Val_s).
+
+%----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+% Evaluate Expression
+eval_expr_s(t_assign(t_id(X_s), Y_s), Env_s, FinalEnv_s, Val_s):- check_present_s(X_s, Env_s),
+    eval_expr_s(Y_s, Env_s, Env1_s, Val_s), update_s(X_s, Val_s, num, Env1_s, FinalEnv_s).
+
+eval_expr_s(t_assign(t_id(X_s), _Y), Env_s, _FinalEnv, _Val):- \+check_present_s(X_s, Env_s),
+    write("Variable not initialised. Please check."),nl, abort.
+
+eval_expr_s(t_assign(t_id(X_s), _Y), Env_s, _FinalEnv, _Val):- lookup_s(X_s, Env_s, _, Type_s),
+    Type_s \= num, write("This operation can only be perfomed on num type of variable. Please check."),nl, abort.
+
+eval_expr_s(t_add(X_s, Y_s), Env_s, FinalEnv_s, Val_s):- eval_expr_s(X_s, Env_s, Env1_s, V1_s),
+                                             eval_expr_s(Y_s, Env1_s, FinalEnv_s, V2_s),
+                                             Val_s is V1_s + V2_s.
+
+eval_expr_s(t_sub(X_s, Y_s), Env_s, FinalEnv_s, Val_s):- eval_expr_s(X_s, Env_s, Env1_s, V1_s),
+                                             eval_expr_s(Y_s, Env1_s, FinalEnv_s, V2_s),
+                                             Val_s is V1_s - V2_s.
+
+eval_expr_s(t_div(X_s, Y_s), Env_s, FinalEnv_s, Val_s):- eval_expr_s(X_s, Env_s, Env1_s, V1_s),
+                                             eval_expr_s(Y_s, Env1_s, FinalEnv_s, V2_s),
+    							   			 Val_s is V1_s / V2_s.
+
+eval_expr_s(t_mul(X_s, Y_s), Env_s, FinalEnv_s, Val_s):- eval_expr_s(X_s, Env_s, Env1_s, V1_s),
+                                             eval_expr_s(Y_s, Env1_s, FinalEnv_s, V2_s),
+    							   			 Val_s is V1_s * V2_s.
+
+eval_expr_s(t_num(X_s), Env_s, Env_s, X_s).
+
+eval_expr_s(t_id(X_s), Env_s, Env_s, Val_s):- check_present_s(X_s, Env_s), lookup_s(X_s, Env_s, Val_s, num).
+
+eval_expr_s(t_id(X_s), Env_s, Env_s, _Val):- \+check_present_s(X_s, Env_s), write("Variable not initialised. Please check."),nl, abort.
+
+eval_expr_s(t_id(X_s), Env_s, Env_s, Val_s):- lookup_s(X_s, Env_s, Val_s, Type_s), Type_s \= num,
+    write("This operation can only be perfomed on num type of variable. Please check."),nl, abort.
+
+eval_expr_s(t_stack(X_s), Env_s, FinalEnv_s, Val_s) :- eval_stack_pt_s(X_s, Val_s, Env_s, FinalEnv_s).
+
+eval_expr_s(t_queue(X_s), Env_s, FinalEnv_s, Val_s) :- eval_queue_pt_s(X_s, Val_s, Env_s, FinalEnv_s).
+
 %----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 % Evaluate Boolean Expression
