@@ -1,0 +1,10 @@
+num r = 0
+num s = 0
+num a = 10
+num b = 0
+for r in range(b, a){
+    for s in range(b , r){
+        print("*")
+    }
+    print("\n")
+}

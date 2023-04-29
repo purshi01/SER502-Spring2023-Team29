@@ -1,0 +1,11 @@
+for j_s in range(1,5) {
+    for(i_s = 0; i_s < 5; i_s=i_s+1) {
+        if(i_s / 2 == 1 or i_s / 2 == 2) {
+            print(i_s)
+            print(" \n")
+        }
+        else {
+            print("Nope \n")
+        }
+    }
+}

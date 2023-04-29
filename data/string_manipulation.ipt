@@ -1,0 +1,10 @@
+string a_s = "SER"
+string b_s = "515"
+
+string c_s = a_s + " class"
+print(c_s, "\n")
+string d
+d = a_s + b_s
+print(d, "\n")
+d = b_s + " concat"
+print(d, "\n")
