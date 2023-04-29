@@ -31,7 +31,7 @@ def semanticsForParseTree(parse_tree):
 
     '''
 
-    prolog.consult("Runtime/runtime.pl")
+    prolog.consult("Runtime/run_time.pl")
     prolog_queryy = "program_eval({},Z)"
     Env = prolog.query(prolog_queryy.format(parse_tree))
     environment = next(Env)["Z"]
