@@ -1,17 +1,13 @@
-num x_s = 0
-num y_s = 5
-num p_s = 0
-num q_s = 5
-num i_s = 0
-num j_s = 0
-for i_s in range(x_s, y_s){
-  for j_s in range(p_s , q_s){
-    if (i_s+j_s==0 or i_s+j_s==5 or i_s+j_s==10) {
-      print("Sum divisible ")
-      }
-    else {
-      print("false \n")
-      }
+num first=0
+num last=5
+num sfirst = 0
+num slast = 5
+num it1 = 0
+num it2 = 0
+for it1 in range(first,last){
+  for it2 in range(sfirst,slast){
+    if(it1+it2==5 or it1+it2==10 or it1+it2==0) { print("Sum can be divided by - ") }
+    else { print("false \n") }
     print("\n")
   }
 }
