@@ -1,0 +1,11 @@
+print("Start\n")
+num x_s = 1
+num y_s = 7
+num z_s = x_s*y_s<6?x_s:y_s
+print(z_s,"\n")
+z_s = x_s*y_s>6?x_s:y_s
+print(z_s,"\n")
+z_s = true?x_s:y_s
+print(z_s,"\n")
+z_s = false?x_s:y_s
+print(z_s)
