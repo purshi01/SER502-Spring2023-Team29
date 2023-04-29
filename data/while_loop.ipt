@@ -1,0 +1,13 @@
+num first=8
+num last=5
+num temp
+while(first<=10 and last>4 and true){
+    print("First: ",first,"\n")
+    first=first+1
+    temp=10
+    while(temp==10){
+        print("Inside iterations")
+        temp=temp-1
+    }
+}
+print("Completed")

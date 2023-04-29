@@ -1,0 +1,8 @@
+num it1=0
+num it2=0
+num first=0
+num last=10
+for it1 in range(first,last){
+    for it2 in range(first,it1){print("*")}
+    print("\n")
+}

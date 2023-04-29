@@ -1,0 +1,5 @@
+num number=0
+for(number = 1; number <= 3 + 2 * 5; number = number + 1){
+	print("Value of number: ",number)
+	print("\n")
+}
