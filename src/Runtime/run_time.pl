@@ -1,5 +1,83 @@
 %----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+% Evaluate Boolean Expression
+not(true, false).
+not(false, true).
+
+eval_bool_s(false, Env_s, Env_s, false).
+eval_bool_s(true, Env_s, Env_s, true).
+eval_bool_s(t_id(X_s), Env_s, Env_s, Val_s) :- check_present_s(X_s, Env_s), lookup_s(X_s, Env_s, Val_s, bool).
+eval_bool_s(t_id(X_s), Env_s, Env_s, Val_s):- lookup_s(X_s, Env_s, Val_s, Type_s), Type_s \= bool,
+    write("This operation can only be perfomed on boolean type of variable. Please check."), nl, abort.
+
+eval_bool_s(t_id(X_s), Env_s, Env_s, _Val):- \+check_present_s(X_s, Env_s), write("Variable not initialised. Please check."),
+    nl, abort.
+
+eval_bool_s(t_notbool(not, X_s), Env_s, FinalEnv_s, Val_s) :- eval_bool_s(X_s, Env_s, FinalEnv_s, V1_s), not(V1_s, Val_s).
+
+
+eval_bool_s(t_bool_operation(X_s, Y_s, Z), Env_s, FinalEnv_s, Val_s) :- eval_bool_s(X_s, Env_s, Env1_s, V1_s),
+    eval_bool_s(Z, Env1_s, FinalEnv_s, V2_s),
+    eval_bool_operator_s(Y_s, V1_s, V2_s, Val_s).
+
+eval_bool_s(t_bool(X_s, Y_s, Z), Env_s, FinalEnv_s, Val_s):- eval_expr_s(X_s, Env_s, Env1_s,V1_s),
+    eval_expr_s(Z, Env1_s, FinalEnv_s,V2_s),
+    eval_compare_s(Y_s, V1_s, V2_s, Val_s).
+
+eval_compare_s(t_comp_op(>), V1_s, V2_s, true):- V1_s > V2_s.
+eval_compare_s(t_comp_op(>), V1_s, V2_s, false):- V1_s =< V2_s.
+
+eval_compare_s(t_comp_op(<), V1_s, V2_s, true):- V1_s < V2_s.
+eval_compare_s(t_comp_op(<), V1_s, V2_s, false):- V1_s >= V2_s.
+
+eval_compare_s(t_comp_op(==), V1_s, V2_s, true):- V1_s =:= V2_s.
+eval_compare_s(t_comp_op(==), V1_s, V2_s, false):- V1_s =\= V2_s.
+
+eval_compare_s(t_comp_op(<=), V1_s, V2_s, true):- V1_s =< V2_s.
+eval_compare_s(t_comp_op(<=), V1_s, V2_s, false):- V1_s > V2_s.
+
+eval_compare_s(t_comp_op(>=), V1_s, V2_s, true):- V1_s >= V2_s.
+eval_compare_s(t_comp_op(>=), V1_s, V2_s, false):- V1_s < V2_s.
+
+eval_compare_s(t_comp_op(=\=), V1_s, V2_s, false):- V1_s =:= V2_s.
+eval_compare_s(t_comp_op(=\=), V1_s, V2_s, true):- V1_s =\= V2_s.
+
+% And OR boolean operations
+eval_bool_operator_s(t_bool_op_and(and),false,true,false).
+eval_bool_operator_s(t_bool_op_and(and),false,false,false).
+eval_bool_operator_s(t_bool_op_and(and),true,false,false).
+eval_bool_operator_s(t_bool_op_and(and),true,true,true).
+
+eval_bool_operator_s(t_bool_op_or(or),false,true,true).
+eval_bool_operator_s(t_bool_op_or(or),false,false,false).
+eval_bool_operator_s(t_bool_op_or(or),true,false,true).
+eval_bool_operator_s(t_bool_op_or(or),true,true,true).
+
+%----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+% Evaluate Ternary Statement
+eval_ternary_s(t_ternary(X_s, Y_s, _), Env_s, FinalEnv_s, Val_s) :- eval_bool_s(X_s, Env_s, Env1_s, true),
+    eval_expr_s(Y_s, Env1_s, FinalEnv_s, Val_s).
+
+eval_ternary_s(t_ternary(X_s, _, Z), Env_s, FinalEnv_s, Val_s) :- eval_bool_s(X_s, Env_s, Env1_s, false),
+    eval_expr_s(Z, Env1_s, FinalEnv_s, Val_s).
+
+%----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+% Evaluate String Manipulation
+eval_string_type_s(t_string_concat_id(X_s), Env_s, V):- lookup_s(X_s, Env_s, V, str).
+eval_string_type_s(t_string_concat_id(X_s), Env_s, _V):- \+check_present_s(X_s, Env_s),
+    write("Variable not initialised. Please check."), nl, abort.
+eval_string_type_s(t_string_concat_id(X_s), Env_s, _V):- lookup_s(X_s, Env_s, _Val, Type_s),
+    Type_s \= str,
+    write("This operation can only be perfomed on string type of variable. Please check."),
+    nl, abort.
+eval_string_type_s(t_string_concat_str(X_s), _Env_s, X_s).
+eval_string_concat(t_string_concat(X_s, Y_s), Env_s, Env_s, Val_s) :- eval_string_type_s(X_s, Env_s, V1_s),
+    eval_string_type_s(Y_s, Env_s, V2_s), string_concat(V1_s, V2_s, Val_s).
+
+%----------------------------------------------------------------------------------------------------------------------------------------------------------
+
 % Evaluate Declaration Statements
 eval_declaration_s(t_declaration_bool_assign(t_id(X_s),Y_s), Env_s, FinalEnv_s) :-
     eval_bool_s(Y_s, Env_s, Env1_s, Val_s), update_s(X_s, Val_s, bool, Env1_s , FinalEnv_s).
