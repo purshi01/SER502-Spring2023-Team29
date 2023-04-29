@@ -1,0 +1,13 @@
+num first=9
+num second=7
+boolean third
+boolean fourth=false
+if(not(first!=second and third)) {
+    print(first)
+    print("\n")
+}
+elif(first==second or third and fourth) {
+    print(fourth)
+    print("\n")
+}
+else {print("none")}
