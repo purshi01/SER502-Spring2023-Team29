@@ -13,7 +13,7 @@ def generate_parse_tree(lex):
     '''
     os.chdir("..")
     os.chdir("src")
-    prolog.consult("Compiler/parse_tree.pl")
+    prolog.consult("Compiler/parsetree.pl")
     prolog_queryy = "program(K,{},[])."
     parse__tree = prolog.query(prolog_queryy.format(lex))
     x = next(parse__tree)["K"]
@@ -31,7 +31,7 @@ def semanticsForParseTree(parse_tree):
 
     '''
 
-    prolog.consult("Runtime/run_time.pl")
+    prolog.consult("Runtime/runtime.pl")
     prolog_queryy = "program_eval({},Z)"
     Env = prolog.query(prolog_queryy.format(parse_tree))
     environment = next(Env)["Z"]
