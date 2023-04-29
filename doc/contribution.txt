@@ -15,16 +15,23 @@ Grammar                          - 33% purushothama 33% Praneeth 33% Rahul
 
 Operators and Keywords           - 33% purushothama 33% Praneeth 33% Rahul
 
-Lexical Analysis and Programs    -
+Deliverable 1:-
+Purushothama Shathappa - Grammar and punctuation Verify whether lex can function as a lexer in our language, Writing grammar.
+Praneeth Kumar Reddy Kotha -  Examine the viability of creating tokens in Python.
+Rahul Ghanghas - Grammar writing, Examine the viability of creating a parse tree using prolog.
 
-Built Lexer and Parser Files	   -
 
-Built Listener and Runner 	     -
+Develiverable 2:-
+Purushothama Shathappa - Semantics, Parse Tree Generation,main.py
+Praneeth Kumar Reddy Kotha - Semantics, Parse Tree Generation,Lexer
+Rahul Ghanghas - Lexer, Parse Tree Generation, main.py
 
-Built Runtime Interpreter        -
 
-Testing Interpreter              -
+Detailed:
 
-Examples and Intermediate Code   -
+Purushothama Shathappa - Boolean, for, statements, Decl, lists, stacks, queues, and commands have semantics. Search, modify, and verify the current Semantics.Create parse trees for stacks, queues, and lists.
 
-Documentation                    -
+Praneeth Kumar Reddy Kotha -Expression semantics, ternary, ifelse, string concatenation, assign, print, while, method, and conversion of formal argument to actual parameter are all covered. In order to create a parse tree, lookup and update. For method, print, and string concatenation, parse trees are generated.
+
+Rahul Ghanghas - In lexer.py, managing brackets and comments, handling writing to file, and deleting the file main method are all covered. Expressions, commands, ternaries, decls, and statements can all be parsed.
+
