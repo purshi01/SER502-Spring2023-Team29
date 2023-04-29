@@ -3,7 +3,6 @@ from functools import reduce
 from tokenize import tokenize, untokenize, NUMBER, STRING, NAME, OP
 from io import BytesIO
 
-
 def lexer(given_file):
     '''
     This proce_ss will produce tokens and
@@ -35,6 +34,9 @@ def lexer(given_file):
                     identify__list.append(tok_val)
                     tokens += ("".join(identify__list))
                     identify__list = []
+                elif identify__list:
+                    identify__list.append(tok_val)
+                    continue
                 else:
                     if tok_val == '!=':
                         tokens += '"'+tok_val+'"'
@@ -43,6 +45,7 @@ def lexer(given_file):
                     else:
                         tokens += tok_val
                 tokens += ","
+    tokens = tokens[:-1]
     tokens += ']'
     # print(tokens)
     return tokens
