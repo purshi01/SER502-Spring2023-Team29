@@ -18,7 +18,7 @@ updte_s(K_s, Type_s, [H|T_s], [H|R]) :- H \= (K_s,_), updte_s(K_s, Type_s, T_s, 
 
 % Lookup Value in Environment
 lookup_s(t_id(K_s), Type_s, Env_s) :- look_up_s(K_s, Type_s, Env_s).
-look_up_s(K_s, _Type, []) :- write(Variable "), write(K_s), write(" not defined properly \n"), abort.
+look_up_s(K_s, _Type, []) :- write("Variable "), write(K_s), write(" not defined properly \n"), abort.
 look_up_s(K_s, Type_s, [(K_s,Type_s)|_T]).
 look_up_s(K1, Type_s, [(K2,_T2)|T_s]) :- K1 \= K2, look_up_s(K1, Type_s, T_s).
 
@@ -36,7 +36,7 @@ term_s(t_div(X, Y))-->term_s(X), [/], brackets_s(Y).
 term_s(t_mul(X, Y)) --> term_s(X), [*], brackets_s(Y).
 term_s(X) --> brackets_s(X).
 
-brackets_s(X) --> [('], expr_s(X), [')'].
+brackets_s(X) --> ['('], expr_s(X), [')'].
 brackets_s(X) --> num(X).
 brackets_s(X) --> identifier_s(X).
 brackets_s(t_stack(X)) --> stack_pt_s(X).
@@ -126,7 +126,7 @@ print_statement_s(_Env, t_print_queue_element(X)) --> queue_pt_s(X).
 %----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 % if else statements
-if_stmt(Env_s, t_ifstmt(X, Y, Z)) --> [if], [('], bool_s(X), [')'], ['{'], command_s(Env_s, _, Y), ['}'], elif_stmt_s(Env_s, Z).
+if_stmt(Env_s, t_ifstmt(X, Y, Z)) --> [if], ['('], bool_s(X), [')'], ['{'], command_s(Env_s, _, Y), ['}'], elif_stmt_s(Env_s, Z).
 
 elif_stmt_s(Env_s, t_elifstmt(X, Y, Z)) --> [elif], ['('], bool_s(X), [')'], ['{'], command_s(Env_s, _, Y), ['}'], elif_stmt_s(Env_s, Z).
 elif_stmt_s(Env_s, t_goto_else_stmt(X)) --> else_stmt_s(Env_s, X).
@@ -156,7 +156,7 @@ stack_pt_s(t_stack_top(X)) --> identifier_s(X), [.], [top], ['('],[')'].
 
 % queue operations
 queue_op_s(_Env, t_queue_pt(X)) --> queue_pt_s(X).
-queue_op_s(Env_s, t_queue_push(X, Y)) --> identifier_s(X), [.] , [push], [('], expr_s(Y) , [')'], {lookup_s(X, queue, Env_s)}.
+queue_op_s(Env_s, t_queue_push(X, Y)) --> identifier_s(X), [.] , [push], ['('], expr_s(Y) , [')'], {lookup_s(X, queue, Env_s)}.
 queue_pt_s(t_queue_poll(X)) --> identifier_s(X), [.], [poll], ['('], [')'].
 queue_pt_s(t_queue_head(X)) --> identifier_s(X), [.], [head], ['('],[')'].
 
@@ -193,7 +193,7 @@ get_actual_parameters_s(Env_s, t_actual_parameter(t_str(X), Y)) --> [X], {string
 get_actual_parameters_s(Env_s, t_actual_parameter(t_num(X), Y)) --> [X], {number(X)}, actual_parameter_list_s(Env_s, Y).
 get_actual_parameters_s(_Env, t_actual_parameter()) --> [].
 
-method_call(Env_s, t_method_call(X, Y)) --> identifier_s(X), [('], get_actual_parameters_s(Env_s, Y), [')'], {lookup_s(X, method_s, Env_s)}.
+method_call(Env_s, t_method_call(X, Y)) --> identifier_s(X), ['('], get_actual_parameters_s(Env_s, Y), [')'], {lookup_s(X, method_s, Env_s)}.
 
 % Methods
 method_s(Env_s, FinalEnv_s, X) --> method_dec_s(Env_s, FinalEnv_s, X).
