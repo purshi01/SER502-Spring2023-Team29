@@ -1,0 +1,11 @@
+num x_s = 4
+num y_s = 4
+num z_s = 8
+num t_s = 5
+
+if (((x_s == 4) and (t_s == 6)) or (not ((z_s==5) and (y_s==4)))) {
+    print("true \n")
+}
+else {
+    print("false \n")
+}

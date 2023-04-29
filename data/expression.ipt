@@ -1,0 +1,28 @@
+num a_s = 1
+num b_s = 5
+num c_s = 5
+num d_s = 0
+d_s = a_s + b_s - c_s
+print(d_s)
+print("\n")
+d_s = a_s * 5 + b_s * c_s - 6
+print(d_s)
+print("\n")
+d_s = a_s * (5 - c_s)
+print(d_s)
+print("\n")
+d_s = b_s / 5 * 6 + (4 * c_s)
+print(d_s)
+print("\n")
+d_s = a_s = (20 * 2 + 5)
+print(a_s)
+print("\n")
+print(d_s)
+print("\n")
+a_s = 1
+d_s = a_s = (20 * a_s + 5)
+print(d_s)
+print("\n")
+d_s = d_s = (5 + b_s * 2 - (3 - 2))
+print(d_s)
+print("\n")

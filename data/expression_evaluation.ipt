@@ -1,0 +1,18 @@
+print("Start")
+print("\n")
+num x_s = 1
+num y_s = 7
+num z_s = 11
+z_s =  x_s + y_s + z_s
+print(z_s)
+print("\n")
+z_s =  x_s + y_s + 5
+print(z_s)
+print("\n")
+num t = z_s * y_s - 6 +  x_s 
+print(t)
+print("\n")
+x_s = (x_s*y_s)/(x_s*y_s) + (z_s/y_s)/(z_s/y_s)
+print(x_s)
+print("\n")
+print("End")

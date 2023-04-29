@@ -1,0 +1,17 @@
+num x_s = 0
+num y_s = 5
+num p_s = 0
+num q_s = 5
+num i_s = 0
+num j_s = 0
+for i_s in range(x_s, y_s){
+  for j_s in range(p_s , q_s){
+    if (i_s+j_s==0 or i_s+j_s==5 or i_s+j_s==10) {
+      print("Sum divisible ")
+      }
+    else {
+      print("false \n")
+      }
+    print("\n")
+  }
+}

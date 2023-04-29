@@ -1,0 +1,31 @@
+# A program to print all prime numbers from 1 to 100
+num max_number = 100
+num outer_iterator = 0
+num inner_iterator = 0
+print("Printing all prime numbers from 1 to 100:\n")
+
+for(outer_iterator = 2; outer_iterator <= max_number; outer_iterator = outer_iterator + 1){
+	num prime_count = 0
+
+	for(inner_iterator = 2; inner_iterator <= outer_iterator; inner_iterator = inner_iterator + 1){
+		num current_number = outer_iterator
+		num current_divisor = inner_iterator
+		num current_iteration = 1
+		num product = 0
+
+		while(product <= current_number){
+			product = current_divisor * current_iteration
+			current_iteration = current_iteration + 1
+		}
+
+		num remainder_mod = current_number - (product - current_divisor)
+
+		if(remainder_mod == 0){
+			prime_count = prime_count + 1
+		}
+	}
+
+	if(prime_count == 1){
+		print(outer_iterator," ")
+	}
+}
