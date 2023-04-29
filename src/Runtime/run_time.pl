@@ -1,4 +1,96 @@
+%----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+% Evaluate Declaration Statements
+eval_declaration_s(t_declaration_bool_assign(t_id(X_s),Y_s), Env_s, FinalEnv_s) :-
+    eval_bool_s(Y_s, Env_s, Env1_s, Val_s), update_s(X_s, Val_s, bool, Env1_s , FinalEnv_s).
+
+eval_declaration_s(t_declaration_bool_assign(t_id(X_s)), Env_s, FinalEnv_s) :-
+    update_s(X_s, false, bool, Env_s , FinalEnv_s).
+
+eval_declaration_s(t_declaration_str_assign(t_id(X_s),Y_s), Env_s, FinalEnv_s) :-
+    update_s(X_s, Y_s, str, Env_s , FinalEnv_s).
+
+eval_declaration_s(t_declaration_str_assign(t_id(X_s)), Env_s, FinalEnv_s) :-
+    update_s(X_s, "", str, Env_s , FinalEnv_s).
+
+eval_declaration_s(t_declaration_str_assign_concat(X_s, Y_s), Env_s, FinalEnv_s) :-
+    eval_string_concat(Y_s, Env_s, Env1_s, Val_s),
+    update_s(X_s, Val_s, str, Env1_s, FinalEnv_s).
+
+eval_declaration_s(t_declaration_num_assign(t_id(X_s),Y_s), Env_s, FinalEnv_s) :-
+    eval_expr_s(Y_s, Env_s, Env1_s, Val_s), update_s(X_s, Val_s, num, Env1_s , FinalEnv_s).
+
+eval_declaration_s(t_declaration_num_assign_ternary(t_id(X_s), Y_s), Env_s, FinalEnv_s) :-
+    eval_ternary_s(Y_s, Env_s, Env1_s, Val_s), update_s(X_s, Val_s, num, Env1_s , FinalEnv_s).
+
+eval_declaration_s(t_declaration_num_assign(t_id(X_s)), Env_s, FinalEnv_s) :-
+    update_s(X_s, 0, num, Env_s, FinalEnv_s).
+
+eval_declaration_s(t_declaration_stack_assign(t_id(X_s)), Env_s, FinalEnv_s) :-
+    update_s(X_s, [], stack, Env_s, FinalEnv_s).
+
+eval_declaration_s(t_declaration_stack_assign(t_id(X_s), Y_s), Env_s, FinalEnv_s) :-
+    update_s(X_s, Y_s, stack, Env_s, FinalEnv_s).
+
+eval_declaration_s(t_declaration_queue_assign(t_id(X_s)), Env_s, FinalEnv_s) :-
+    update_s(X_s, [], queue, Env_s, FinalEnv_s).
+
+eval_declaration_s(t_declaration_queue_assign(t_id(X_s), Y_s), Env_s, FinalEnv_s) :-
+    update_s(X_s, Y_s, queue, Env_s, FinalEnv_s).
+
+eval_declaration_s(t_declaration_list_assign(t_id(X_s), Y_s), Env_s, FinalEnv_s) :-
+    update_s(X_s, Y_s, list, Env_s, FinalEnv_s).
+
+%----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+% Evaluate assign statements
+eval_assignment_s(t_assignment_bool(t_id(X_s), Y_s), Env_s, FinalEnv_s) :-
+    eval_bool_s(Y_s, Env_s, Env1_s, Val_s),
+    update_s(X_s, Val_s, bool, Env1_s, FinalEnv_s).
+
+eval_assignment_s(t_assignment_str(t_id(X_s), Y_s), Env_s, FinalEnv_s) :-
+    update_s(X_s, Y_s, str, Env_s, FinalEnv_s).
+
+eval_assignment_s(t_assignment_str_concat(X_s, Y_s), Env_s, FinalEnv_s) :-
+    eval_string_concat(Y_s, Env_s, Env1_s, Val_s),
+    update_s(X_s, Val_s, str, Env1_s , FinalEnv_s).
+
+eval_assignment_s(t_assignment_num_assign(t_id(X_s), Y_s), Env_s, FinalEnv_s) :-
+    eval_expr_s(Y_s, Env_s, Env1_s, Val_s),
+	update_s(X_s, Val_s, num, Env1_s, FinalEnv_s).
+
+eval_assignment_s(t_assignment_num_assign_ternary(t_id(X_s), Y_s), Env_s, FinalEnv_s) :-
+    eval_ternary_s(Y_s, Env_s, Env1_s, Val_s),
+	update_s(X_s, Val_s, num, Env1_s, FinalEnv_s).
+
+eval_assignment_s(t_assignment_stack(t_id(X_s), Y_s), Env_s, FinalEnv_s) :-
+	update_s(X_s, Y_s, stack, Env_s, FinalEnv_s).
+
+eval_assignment_s(t_assignment_queue(t_id(X_s), Y_s), Env_s, FinalEnv_s) :-
+	update_s(X_s, Y_s, queue, Env_s, FinalEnv_s).
+
+eval_assignment_s(t_assignment_list(t_id(X_s), Y_s), Env_s, FinalEnv_s) :-
+	update_s(X_s, Y_s, list, Env_s, FinalEnv_s).
+
+%----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+% Print Statements
+eval_print_s(t_print(), Env_s, Env_s).
+eval_print_s(t_print(X_s, Y_s), Env_s, FinalEnv_s) :- write(X_s), eval_print_s(Y_s, Env_s, FinalEnv_s).
+eval_print_s(t_print_id(X_s, Y_s), Env_s, FinalEnv_s) :- lookup_s(X_s,Env_s,Val_s,_), write(Val_s), eval_print_s(Y_s, Env_s, FinalEnv_s).
+eval_print_s(t_print_id(X_s, _), Env_s, Env_s) :- \+check_present_s(X_s, Env_s), write("Variable not initialised. Please check.").
+eval_print_s(t_print_expr(X_s, Y_s), Env_s, FinalEnv_s) :- eval_expr_s(X_s, Env_s, Env1_s, Val_s), write(Val_s), eval_print_s(Y_s, Env1_s, FinalEnv_s).
+
+%----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+% If else statement
+eval_ifelse_stmt_s(t_ifstmt(X_s, Y_s, _), Env_s, FinalEnv_s) :- eval_bool_s(X_s, Env_s, Env1_s, true), eval_command_s(Y_s, Env1_s, FinalEnv_s).
+eval_ifelse_stmt_s(t_ifstmt(X_s, _, Z), Env_s, FinalEnv_s) :- eval_bool_s(X_s, Env_s, Env1_s, false), eval_ifelse_stmt_s(Z, Env1_s, FinalEnv_s).
+eval_ifelse_stmt_s(t_elifstmt(X_s, Y_s, _), Env_s, FinalEnv_s) :- eval_bool_s(X_s, Env_s, Env1_s, true), eval_command_s(Y_s, Env1_s, FinalEnv_s).
+eval_ifelse_stmt_s(t_elifstmt(X_s, _, Z), Env_s, FinalEnv_s) :- eval_bool_s(X_s, Env_s, Env1_s, false), eval_ifelse_stmt_s(Z, Env1_s, FinalEnv_s).
+eval_ifelse_stmt_s(t_goto_else_stmt(X_s), Env_s, FinalEnv_s) :- eval_ifelse_stmt_s(X_s, Env_s, FinalEnv_s).
+eval_ifelse_stmt_s(t_elsestmt(X_s), Env_s, FinalEnv_s) :- eval_command_s(X_s, Env_s, FinalEnv_s).
+eval_ifelse_stmt_s(t_elsestmt(), Env_s, Env_s) :- true.
 %----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 % While statement
