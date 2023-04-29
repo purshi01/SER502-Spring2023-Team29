@@ -1,5 +1,0 @@
-num r = 0
-for (r=1;r<=3+2*5;r=r+1){
-	print("Value of r = ", r)
-	print("\n")
-}
