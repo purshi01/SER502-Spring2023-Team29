@@ -45,32 +45,6 @@ brackets_s(t_queue(X)) --> queue_pt_s(X).
 identifier_s(t_id(X)) -->[X], {check_reserved_keywords_s(X)}, {atom(X)}.
 num(t_num(X)) --> [X], {number(X)}.
 
-%----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-% Boolean Operators
-boolean_operator_s(t_bool_op_and(and))  --> [and].
-boolean_operator_s(t_bool_op_or(or))  --> [or].
-
-% Boolean Operations
-bool_s(t_bool_operation(X,Y,Z)) --> bool_s(X), boolean_operator_s(Y), boolean_s(Z).
-bool_s(X) --> boolean_s(X).
-boolean_s(t_bool(X,Y,Z)) --> expr_s(X), comparison_operator_s(Y), expr_s(Z).
-boolean_s(t_notbool(not, X)) --> [not], boolean_s(X).
-boolean_s(X) --> identifier_s(X).
-boolean_s(true) --> [true].
-boolean_s(false) --> [false].
-boolean_s(X) --> brkt_bool(X).
-brkt_bool(X)-->['('], bool_s(X), [')'].
-
-% Comparison Operators
-comparison_operator_s(t_comp_op(>)) --> [>].
-comparison_operator_s(t_comp_op(<)) --> [<].
-comparison_operator_s(t_comp_op(==)) --> [==].
-comparison_operator_s(t_comp_op(<=)) --> [<=].
-comparison_operator_s(t_comp_op(>=)) --> [>=].
-comparison_operator_s(t_comp_op(=\=)) --> ["!="].
-
-%----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 % Ternary Operation
 ternary_op_s(t_ternary(X, Y, Z)) --> bool_s(X), [?], expr_s(Y), [:], expr_s(Z).
