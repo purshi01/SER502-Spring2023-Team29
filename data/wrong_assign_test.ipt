@@ -1,0 +1,6 @@
+num first = 10
+#first = "string"
+if (first==10){num number=20}
+#print(number)
+for temp in range(1,5){print(temp,"\n")}
+#print(temp)
