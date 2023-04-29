@@ -17,7 +17,7 @@ Operators and Keywords           - 33% purushothama 33% Praneeth 33% Rahul
 
 Deliverable 1:-
 Purushothama Shathappa - Grammar and punctuation Verify whether lex can function as a lexer in our language, Writing grammar.
-Praneeth Kumar Reddy Kotha -  Examine the viability of creating tokens in Python.
+Praneeth Kumar Reddy Kotha - Grammar writing, examine the viability of creating tokens in Python.
 Rahul Ghanghas - Grammar writing, Examine the viability of creating a parse tree using prolog.
 
 
