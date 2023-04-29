@@ -13,7 +13,7 @@ def generate_parse_tree(lex):
     '''
     os.chdir("..")
     os.chdir("src")
-    prolog.consult("Compiler/parsetree.pl")
+    prolog.consult("Compiler/parse_tree.pl")
     prolog_queryy = "program(K,{},[])."
     parse__tree = prolog.query(prolog_queryy.format(lex))
     x = next(parse__tree)["K"]
